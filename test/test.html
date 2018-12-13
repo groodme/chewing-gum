@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script type="module" language="javascript" src="src/chew.js"></script>
+        <script language="javascript">
+         $.when($.ready).then(function(){
+             var progressBar = $.chew.progressbar({striped: true, animateStripes: true})
+             var progressTimer = undefined
+             let progressTimerHandler = function(evt) {
+                 progressBar.inc(1)
+                 if (progressBar.progress >= progressBar.maxValue) {
+                     clearInterval(progressTimer)
+                     $("#start-button").removeClass("disabled")
+                     $("#reset-button").removeClass("disabled")
+                 }
+             }
+             $('.placeholder').append(progressBar)
+             
+             $('#start-button').click(function(evt){
+                 $("#start-button").addClass("disabled")
+                 $("#reset-button").addClass("disabled")
+                 progressTimer = window.setInterval(progressTimerHandler, 1000.0/60.0)
+             })
+
+             $('#reset-button').click(function(evt){
+                 progressBar.setProgress(0)
+             })
+         })
+        </script>
+        <style>
+         body {
+             padding: 0;
+             margin: 0;
+             width: 100%;
+             height: 100%;
+         }
+        </style>
+    </head>
+    <body>
+        <main class="container mt-5">
+            <h1>Chewing Gum Plugin</h1>
+            <h2>Progress Bar Test</h2>
+            <div class="placeholder mx-auto"></div>
+            <div class="container mt-5">
+                <button class="btn btn-primary" id="start-button">Start Progress</button>
+                <button class="btn btn-secondary" id="reset-button">Reset</button>
+            </div>
+        </main>
+    </body>
+</html>
