@@ -26,9 +26,16 @@
 //
 
 'use strict'
-import Progress from './progress.js'
+
+import Constants from './constants.js'
+import ProgressBar from './progress.js'
+import Button from './button.js'
+import Dialog from './dialog.js'
 
 (function($) {
     $.chew = {}
-    Progress($)
+    Constants($)
+    ProgressBar($)
+    Button($)
+    Dialog($)
 })(jQuery)
