@@ -30,6 +30,75 @@
              })
          })
         </script>
+        <script language="javascript">
+         $.when($.ready).then(function(){
+             var dialog = $.chew.dialog({
+                 title: "This is a drill",
+                 closeButton: true,
+                 content: $('<p>').text("This is a drill. Don't worry"),
+                 buttons: [
+                     $.chew.button({label: 'Ok', style: $.chew.BUTTON.STYLE.PRIMARY, click: function(evt) { dialog.hide() }})
+                 ]
+             })
+
+             $('#show-dialog').click(function(evt){
+                 dialog.show()
+             })
+         })
+        </script>
+        <style>
+         body {
+             padding: 0;
+             margin: 0;
+             width: 100%;
+             height: 100%;
+         }
+        </style>
+        <script language="javascript">
+         $.when($.ready).then(function(){
+             let progressBar = $.chew.progressbar({striped: true, animateStripes: true})
+             var progressTimer = undefined
+             let progressTimerHandler = function(evt) {
+                 progressBar.inc(1)
+                 if (progressBar.progress >= progressBar.maxValue) {
+                     clearInterval(progressTimer)
+                 }
+             }
+
+             let content = $('<div>')
+                 .append($('<p>').text("This is a drill. Don't worry"))
+                 .append($('<p>').append(progressBar))
+             var dialog = $.chew.dialog({
+                 title: "This is a drill",
+                 content: content,
+                 buttons: [
+                     $.chew.button({
+                         label: 'Fire!',
+                         style: $.chew.BUTTON.STYLE.DANGER,
+                         click: function(evt) {
+                             progressTimer = window.setInterval(progressTimerHandler, 1000.0/60.0)
+                         }
+                     }),
+                     $.chew.button({
+                         label: 'Reset',
+                         style: $.chew.BUTTON.STYLE.WARNING,
+                         click: function(evt) {
+                             progressBar.setProgress(0)
+                         }
+                     }),
+                     $.chew.button({
+                         label: 'Cancel',
+                         style: $.chew.BUTTON.STYLE.PRIMARY,
+                         click: function(evt){ dialog.hide() }
+                     })
+                 ]
+             })
+
+             $('#show-dialog-progress').click(function(evt){
+                 dialog.show()
+             })
+         })
+        </script>
         <style>
          body {
              padding: 0;
@@ -46,7 +115,9 @@
             <div class="placeholder mx-auto"></div>
             <div class="container mt-5">
                 <button class="btn btn-primary" id="start-button">Start Progress</button>
-                <button class="btn btn-secondary" id="reset-button">Reset</button>
+                <button class="btn btn-primary" id="reset-button">Reset</button>
+                <button class="btn btn-primary" id="show-dialog">Show Dialog</button>
+                <button class="btn btn-primary" id="show-dialog-progress">Show Dialog With Progress Bar</button>
             </div>
         </main>
     </body>
