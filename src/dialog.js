@@ -60,7 +60,12 @@ let Dialog = function($) {
         }
         let functionality = {
             show: function(){
-                $(this).modal('show')
+                var opts = {}
+                if (options.autodismiss != undefined && !options.autodismiss) {
+                    opts.backdrop = 'static'
+                    opts.keyboard = false
+                }
+                $(this).modal(opts)
             },
             hide: function(){
                 $(this).modal('hide')
