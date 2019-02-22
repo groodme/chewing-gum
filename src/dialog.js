@@ -27,15 +27,15 @@
 
 'use strict'
 
-let Dialog = function($) {
-    $.chew.dialog = function(options) {
-        let widget  = $('<div>').attr('tabindex', -1).attr('role', 'dialog').addClass('modal')
-        let dialog  = $('<div>').attr('role', 'document').addClass('modal-dialog')
+let Dialog = function ($) {
+    $.chew.dialog = function (options) {
+        let widget = $('<div>').attr('tabindex', -1).attr('role', 'dialog').addClass('modal')
+        let dialog = $('<div>').attr('role', 'document').addClass('modal-dialog')
         let content = $('<div>').addClass('modal-content')
-        let header  = $('<div>').addClass('modal-header')
-        let body    = $('<div>').addClass('modal-body')
-        let footer  = $('<div>').addClass('modal-footer')
-        
+        let header = $('<div>').addClass('modal-header')
+        let body = $('<div>').addClass('modal-body')
+        let footer = $('<div>').addClass('modal-footer')
+
         widget.append(dialog.append(content))
         if (options.title || options.closeButton) {
             content.append(header)
@@ -54,20 +54,32 @@ let Dialog = function($) {
         }
         if (options.buttons != undefined) {
             content.append(footer)
-            options.buttons.forEach(function(button) {
+            options.buttons.forEach(function (button) {
                 footer.append(button)
             })
         }
         let functionality = {
-            show: function(){
+            onshow: options.onshow,
+            onclose: options.onclose,
+            show: function () {
                 var opts = {}
                 if (options.autodismiss != undefined && !options.autodismiss) {
                     opts.backdrop = 'static'
                     opts.keyboard = false
                 }
+                if (this.onshow != undefined) {
+                    $(this).on('shown.bs.modal', (e) => {
+                        this.onshow(e)
+                    })
+                }
                 $(this).modal(opts)
+                if (this.onclose != undefined) {
+                    $(this).on('hidden.bs.modal', (e) => {
+                        this.onclose(e)
+                    })
+                }
             },
-            hide: function(){
+            hide: function () {
                 $(this).modal('hide')
             },
         }
